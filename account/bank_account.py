@@ -1,35 +1,31 @@
 from account.transaction import Transaction
 from account.user import User
+from decimal import Decimal
 
 class BankAccount:
-    def __init__(self,name= "John" ,email= "john@gmail.com", initial_balance=0):
-        if not isinstance(initial_balance , (int, float)) or initial_balance<0:
-            print("Invalid initial balance!")
-        self.balance = initial_balance
-        self.transactions_history = []
-        self.account_type = "Generic"
-        self.user = User(name, email)
+    def __init__(self, balance):
+        self.balance = Decimal(balance)
+        self.transactions = []
 
     def deposit(self, amount):
-        if not isinstance(amount , (int, float)) and  amount <= 0:
-            print("Deposit amount is invalid!")
+        amount = Decimal(amount)
         self.balance += amount
-        self.transactions_history.append(Transaction(amount, "deposit"))
+        self.transactions.append(f"Deposited: Rs. {amount}")
 
     def withdraw(self, amount):
-        if not isinstance(amount ,(int, float))  and amount <= 0:
-            print("Withdrawal amount is invalid!")
-        if self.balance < amount-100:
-            print("Insufficient Balance!")
-        self.balance += amount
-        self.transactions_history.append(Transaction(amount, "withdraw"))
+        amount = Decimal(amount)
+        if self.balance >= amount:
+            self.balance -= amount
+            self.transactions.append(f"Withdrawn: Rs. {amount}")
+        else:
+            raise ValueError("Insufficient balance!")
 
     def get_balance(self):
         return self.balance
 
     def get_transaction_history(self):
-        return self.transactions_history
-
+        return self.transactions
+        
     def get_account_type(self):
         return self.account_type
 
