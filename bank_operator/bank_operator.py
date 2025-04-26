@@ -8,7 +8,7 @@ def create_user():
     email = input("Enter email: ")
     user = User(name, email)
     if not user.is_valid_email(email):
-        print("Invalid email address!")
+        print("Email is invalid!")
     users.append(user)
     print(f"User {name} created.\n")
 
@@ -18,23 +18,17 @@ def list_users():
 
 def create_account():
     if not users:
-        print("No Users Available.Please create a user first")
+        print("No users available. Please create a user first.")
         return
-    list_users()
-    try:
-    idx = int(input("Select user number: ")) - 1
-    if idx < 0 or idx >= len(users):
-        print("Invalid user selection.\n")
-        return
-    except ValueError:
-       print("Invalid input.\n")
-       return
-    print("Account Type:")
-    print("1. Savings Account")
-    print("2. Students Account")
-    print("3. Current Account")
-    account_choice = int(input("Enter your choice (1, 2, 3): "))
-    amount = float(input("Enter initial deposit: "))
+    else:
+        list_users()
+        idx = int(input("Select user number: ")) - 1
+        print("Account Type:")
+        print("1. Savings Account")
+        print("2. Students Account")
+        print("3. Current Account")
+        account_choice = int(input("Enter your choice (1, 2, 3): "))
+        amount = float(input("Enter initial deposit: "))
 
     if account_choice == 1:
         account = SavingsAccount(amount)
@@ -66,7 +60,7 @@ def withdraw_money():
     for i, acc in enumerate(user.accounts):
         print(f"{i+1}. Balance: Rs. {acc.get_balance()}")
     acc_idx = int(input("Select account: ")) - 1
-    amount = float(input("Enter amount: "))
+    amount = float(input("Enter amount to withdraw: "))
     try:
         user.accounts[acc_idx].withdraw(amount)
         print("Withdrawal successful.\n")
@@ -81,4 +75,3 @@ def view_transactions():
         print(f"\n{acc.get_account_type()} {i+1} - Balance: Rs. {acc.get_balance()}")
         for tx in acc.get_transaction_history():
             print(tx)
-
